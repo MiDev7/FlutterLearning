@@ -21,20 +21,38 @@ class _MyAppState extends State<MyApp> {
   static const _questions = [
     {
       "questionText": 'What is your favourtie colour?',
-      "answer": ['Yellow', 'Green', 'Blue', 'Red'],
+      "answer": [
+        {'text': 'Yellow', 'score': 5},
+        {'text': 'Green', 'score': 8},
+        {'text': 'Blue', 'score': 2},
+        {'text': 'Red', 'score': 4}
+      ],
     },
     {
       "questionText": 'What is your name ?',
-      "answer": ['Tony', 'Alexander', 'Angelo', 'Polo'],
+      "answer": [
+        {'text': 'Tony', 'score': 5},
+        {'text': 'Alexander', 'score': 2},
+        {'text': 'Angelo', 'score': 4},
+        {'text': 'Polo', 'score': 8}
+      ],
     },
     {
       "questionText": 'What is your dream or goal in life ?',
-      "answer": ['Smartest', 'Strongest', 'Richness', 'Footballer'],
+      "answer": [
+        {'text': 'Smartest', 'score': 4},
+        {'text': 'Strongest', 'score': 5},
+        {'text': 'Richness', 'score': 3},
+        {'text': 'Footballer', 'score': 6}
+      ],
     },
   ];
   var _questionIndex = 0;
+  var _totalScore = 0;
 
-  void _answerQuestion() {
+  void _answerQuestion(int score) {
+    _totalScore += score;
+
     setState(() {
       _questionIndex = _questionIndex + 1;
     });
@@ -42,6 +60,7 @@ class _MyAppState extends State<MyApp> {
 
   void _resetQuestion() {
     setState(() {
+      _totalScore = 0;
       _questionIndex = 0;
     });
   }
@@ -50,6 +69,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+          resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: const Text('My first App'),
             backgroundColor: const Color.fromARGB(255, 73, 4, 90),
@@ -59,7 +79,10 @@ class _MyAppState extends State<MyApp> {
                   answerQuestion: _answerQuestion,
                   questionsText: _questions,
                   index: _questionIndex)
-              : Result(resetQuestion: _resetQuestion),
+              : Result(
+                  resetQuestion: _resetQuestion,
+                  resultScore: _totalScore,
+                ),
           bottomNavigationBar: const BottomBar()),
     );
   }
